@@ -8,3 +8,10 @@ class Alojamiento(models.Model):
 
     def __str__(self):
         return self.nombre_alojamiento
+
+class Provincia(models.Model):
+    nombre_provincia = models.CharField(max_length=50)
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre_provincia
