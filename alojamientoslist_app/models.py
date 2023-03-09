@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Alojamiento(models.Model):
-    id_alojamiento = models.BigAutoField(primary_key=True)
     nombre_alojamiento = models.CharField(max_length=100)
     capacidad = models.IntegerField()
     activo = models.BooleanField(default=True)
@@ -11,7 +10,6 @@ class Alojamiento(models.Model):
         return self.nombre_alojamiento
 
 class Provincia(models.Model):
-    id_provincia = models.BigAutoField(primary_key=True)
     nombre_provincia = models.CharField(max_length=50)
     activo = models.BooleanField(default=True)
 
