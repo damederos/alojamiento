@@ -1,5 +1,5 @@
 from django.urls import path
-from alojamientoslist_app.views import alojamiento_list, alojamiento_detail
+from alojamientoslist_app.api.views import alojamiento_list, alojamiento_detail
 
 urlpatterns = [
     path('list/', alojamiento_list, name='alojamiento-listar'),
