@@ -4,7 +4,7 @@ from alojamientoslist_app.models import (Periodo_vacacional, Persona, Alojamient
 class PersonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Persona
-        field = "__all__"
+        fields = '__all__'
 
     def validated_nombre_completo(self, data):
         if len(data)<3:
@@ -15,7 +15,7 @@ class PersonaSerializer(serializers.ModelSerializer):
 class ReservacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservacion
-        field = ['id_reservacion', 'fecha_inicio', 'fecha_fin', 'fecha_registro', 'cancelada']
+        fields = ['id_reservacion', 'fecha_inicio', 'fecha_fin', 'fecha_registro', 'cancelada']
 
 class PeriodoSerializer(serializers.ModelSerializer):
     reservacionlist = ReservacionSerializer(many=True, read_only=True)
@@ -29,3 +29,7 @@ class PeriodoSerializer(serializers.ModelSerializer):
         else:
             return data
 
+class CargoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cargo
+        fields = '__all__'
