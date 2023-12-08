@@ -15,7 +15,7 @@ class PersonaSerializer(serializers.ModelSerializer):
 class ReservacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservacion
-        fields = ['id_reservacion', 'fecha_inicio', 'fecha_fin', 'fecha_registro', 'cancelada']
+        fields = "__all__"
 
 class PeriodoSerializer(serializers.ModelSerializer):
     reservacionlist = ReservacionSerializer(many=True, read_only=True)
@@ -33,3 +33,9 @@ class CargoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cargo
         fields = '__all__'
+
+class AlojamientoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alojamiento
+        fields = '__all__'
+
