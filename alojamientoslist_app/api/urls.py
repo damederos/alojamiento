@@ -23,5 +23,5 @@ urlpatterns = [
     #crear reservacion
     path('periodo/<int:pk>/reservation-create/', ReservacionCreate.as_view(), name='reservacion-create'),
     path('periodo/<int:pk>/reservations/', ReservacionList.as_view(), name='reservacion-list'),
-    path(' <int:pk>/', ReservacionDetail.as_view(), name='reservacion-detail')
+    path('reservacion/<int:pk>/', ReservacionDetail.as_view(), name='reservacion-detail')
 ]

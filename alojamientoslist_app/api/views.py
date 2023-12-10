@@ -5,7 +5,7 @@ from alojamientoslist_app.models import (Persona, Cargo, Alojamiento, Periodo_va
 from rest_framework import generics, mixins, viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from alojamientoslist_app.api.permissions import AdminOrReadOnly
+from alojamientoslist_app.api.permissions import (AdminOrReadOnly, ReservacionUser)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -55,24 +55,29 @@ class PeriodoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PeriodoSerializer
 
 class ReservacionCreate(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ReservacionUser]
     serializer_class = ReservacionSerializer
 
     def get_queryset(self):
         return Reservacion.objects.all()
 
     def perform_create(self, serializer):
-        #esto trae el id en la url
+        #esto trae el id del periodo vacacional en la url
         pk = self.kwargs.get('pk')
+        #obtiene el periodo segun su id
         vacaciones = Periodo_vacacional.objects.get(pk=pk)
+        #datos de user autenticado
         user = self.request.user
-        reservacion_queryset = Reservacion.objects.filter(id_periodo=vacaciones, id_usuario=user)
-        if reservacion_queryset.exists():
+        reservacion_usuario = Reservacion.objects.filter(id_usuario=user)
+        reservacion_queryset = Reservacion.objects.filter(id_periodo=vacaciones)
+        if reservacion_queryset.exists() and reservacion_usuario.exists():
             raise ValidationError("El ususario ya registro su reservacion en este periodo vacacional")
-        serializer.save(id_periodo=vacaciones, id_usuario=user)
+        serializer.save(id_periodo=vacaciones)
+        serializer.save(id_usuario=user)
 
 class ReservacionList(generics.ListAPIView):
     serializer_class = ReservacionSerializer
+    permission_classes = [ReservacionUser]
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Reservacion.objects.filter(id_periodo=pk)
@@ -80,3 +85,4 @@ class ReservacionList(generics.ListAPIView):
 class ReservacionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservacion.objects.all()
     serializer_class = ReservacionSerializer
+    permission_classes = [ReservacionUser]
