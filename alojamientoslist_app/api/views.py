@@ -2,7 +2,10 @@
 from alojamientoslist_app.api.serializers import (PersonaSerializer, CargoSerializer, AlojamientoSerializer, PeriodoSerializer,
                                                   ReservacionSerializer)
 from alojamientoslist_app.models import (Persona, Cargo, Alojamiento, Periodo_vacacional, Reservacion)
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, viewsets
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
+from alojamientoslist_app.api.permissions import AdminOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -32,25 +35,18 @@ class PersonaDetail(mixins.RetrieveModelMixin, generics.GenericAPIView, mixins.U
         return self.destroy(request, *args, **kwargs)
 
 #crud de cargo
-class CargoList(generics.ListCreateAPIView):
-    queryset = Cargo.objects.all()
-    serializer_class = CargoSerializer
-
-class CargoDetail(generics.RetrieveUpdateDestroyAPIView):
+class CargoVS(viewsets.ModelViewSet):
     queryset = Cargo.objects.all()
     serializer_class = CargoSerializer
 
 #crud de alojamiento
-class AlojamientoList(generics.ListCreateAPIView):
-    queryset = Alojamiento.objects.all()
-    serializer_class = AlojamientoSerializer
-
-class AlojamientoDetail(generics.RetrieveUpdateDestroyAPIView):
+class AlojamientoVS(viewsets.ModelViewSet):
     queryset = Alojamiento.objects.all()
     serializer_class = AlojamientoSerializer
 
 #crud de periodo vacacional
-class PeriodoList(generics.ListCreateAPIView):
+class PeriodoVS(viewsets.ModelViewSet):
+    permission_classes = [AdminOrReadOnly]
     queryset = Periodo_vacacional.objects.all()
     serializer_class = PeriodoSerializer
 
@@ -59,12 +55,21 @@ class PeriodoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PeriodoSerializer
 
 class ReservacionCreate(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = ReservacionSerializer
 
+    def get_queryset(self):
+        return Reservacion.objects.all()
+
     def perform_create(self, serializer):
+        #esto trae el id en la url
         pk = self.kwargs.get('pk')
         vacaciones = Periodo_vacacional.objects.get(pk=pk)
-        serializer.save(id_periodo=vacaciones)
+        user = self.request.user
+        reservacion_queryset = Reservacion.objects.filter(id_periodo=vacaciones, id_usuario=user)
+        if reservacion_queryset.exists():
+            raise ValidationError("El ususario ya registro su reservacion en este periodo vacacional")
+        serializer.save(id_periodo=vacaciones, id_usuario=user)
 
 class ReservacionList(generics.ListAPIView):
     serializer_class = ReservacionSerializer
@@ -75,5 +80,3 @@ class ReservacionList(generics.ListAPIView):
 class ReservacionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservacion.objects.all()
     serializer_class = ReservacionSerializer
-
-

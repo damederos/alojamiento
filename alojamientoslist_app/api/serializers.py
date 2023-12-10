@@ -13,6 +13,7 @@ class PersonaSerializer(serializers.ModelSerializer):
             return data
 
 class ReservacionSerializer(serializers.ModelSerializer):
+    id_usuario = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Reservacion
         fields = "__all__"

@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Cargo(models.Model):
@@ -64,6 +65,7 @@ class Persona(models.Model):
 
 class Reservacion(models.Model):
     id_reservacion = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="usuario")
     id_persona = models.ForeignKey(Persona, on_delete=models.CASCADE, null=False, blank=False, related_name="personareserva", verbose_name="personas")
     id_periodo = models.ForeignKey(Periodo_vacacional, on_delete=models.PROTECT, related_name="reservacionlist", verbose_name="periodos")
     id_alojamiento = models.ForeignKey(Alojamiento, on_delete=models.PROTECT, related_name="reservalojamiento", verbose_name="alojamientos")
