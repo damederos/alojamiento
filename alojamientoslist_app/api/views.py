@@ -75,14 +75,7 @@ class ReservacionCreate(generics.CreateAPIView):
         serializer.save(id_periodo=vacaciones)
         serializer.save(id_usuario=user)
 
-class ReservacionList(generics.ListAPIView):
-    serializer_class = ReservacionSerializer
-    permission_classes = [ReservacionUser]
-    def get_queryset(self):
-        pk = self.kwargs['pk']
-        return Reservacion.objects.filter(id_periodo=pk)
-
 class ReservacionDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [ReservacionUser]
     queryset = Reservacion.objects.all()
     serializer_class = ReservacionSerializer
-    permission_classes = [ReservacionUser]

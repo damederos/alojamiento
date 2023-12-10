@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from alojamientoslist_app.api.views import (PersonaList, PersonaDetail, CargoVS, AlojamientoVS,
-                                            PeriodoVS, ReservacionCreate, ReservacionList, ReservacionDetail)
+                                            PeriodoVS, ReservacionCreate, ReservacionDetail)
 router = DefaultRouter()
 router.register('cargo', CargoVS, basename='cargo')
 router.register('alojamiento', AlojamientoVS, basename='alojamiento')
@@ -20,8 +20,6 @@ urlpatterns = [
     path('', include(router.urls)),
 
     #Gestionar reservacion
-    #crear reservacion
     path('periodo/<int:pk>/reservation-create/', ReservacionCreate.as_view(), name='reservacion-create'),
-    path('periodo/<int:pk>/reservations/', ReservacionList.as_view(), name='reservacion-list'),
     path('reservacion/<int:pk>/', ReservacionDetail.as_view(), name='reservacion-detail')
 ]
