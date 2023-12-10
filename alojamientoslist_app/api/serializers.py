@@ -16,7 +16,7 @@ class ReservacionSerializer(serializers.ModelSerializer):
     id_usuario = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Reservacion
-        fields = "__all__"
+        exclude = ['id_periodo']
 
 class PeriodoSerializer(serializers.ModelSerializer):
     reservacionlist = ReservacionSerializer(many=True, read_only=True)
