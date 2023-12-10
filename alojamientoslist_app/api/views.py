@@ -5,7 +5,7 @@ from alojamientoslist_app.models import (Persona, Cargo, Alojamiento, Periodo_va
 from rest_framework import generics, mixins, viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from alojamientoslist_app.api.permissions import (AdminOrReadOnly, ReservacionUser)
+from alojamientoslist_app.api.permissions import (AdminOrReadOnly, ReservacionUser, IsAdminStaff)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -36,11 +36,13 @@ class PersonaDetail(mixins.RetrieveModelMixin, generics.GenericAPIView, mixins.U
 
 #crud de cargo
 class CargoVS(viewsets.ModelViewSet):
+    permission_classes = [IsAdminStaff]
     queryset = Cargo.objects.all()
     serializer_class = CargoSerializer
 
 #crud de alojamiento
 class AlojamientoVS(viewsets.ModelViewSet):
+    permission_classes = [IsAdminStaff]
     queryset = Alojamiento.objects.all()
     serializer_class = AlojamientoSerializer
 
@@ -51,6 +53,7 @@ class PeriodoVS(viewsets.ModelViewSet):
     serializer_class = PeriodoSerializer
 
 class PeriodoDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminStaff]
     queryset = Periodo_vacacional.objects.all()
     serializer_class = PeriodoSerializer
 

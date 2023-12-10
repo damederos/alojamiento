@@ -15,3 +15,8 @@ class ReservacionUser(permissions.BasePermission):
         usuario = obj.id_usuario == request.user
         permitido = bool(admin_permission or usuario)
         return permitido
+
+class IsAdminStaff(permissions.IsAdminUser):
+    def has_permission(self, request, view):
+        admin_satff = bool(request.user.is_staff or request.user.is_superuser)
+        return admin_satff
