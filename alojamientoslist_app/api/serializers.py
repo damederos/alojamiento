@@ -14,6 +14,7 @@ class PersonaSerializer(serializers.ModelSerializer):
 
 class ReservacionSerializer(serializers.ModelSerializer):
     id_usuario = serializers.StringRelatedField(read_only=True)
+    nombre_usuario = serializers.CharField(source='User.username')
     class Meta:
         model = Reservacion
         exclude = ['id_periodo']
