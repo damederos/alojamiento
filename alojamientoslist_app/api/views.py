@@ -9,6 +9,7 @@ from alojamientoslist_app.api.permissions import (AdminOrReadOnly, ReservacionUs
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from alojamientoslist_app.api.throttling import ReservacionCreateThrottle
 
 #crud de Persona
 class PersonaList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
@@ -48,21 +49,27 @@ class AlojamientoVS(viewsets.ModelViewSet):
 
 #crud de periodo vacacional
 class PeriodoVS(viewsets.ModelViewSet):
-    permission_classes = [AdminOrReadOnly]
-    queryset = Periodo_vacacional.objects.all()
-    serializer_class = PeriodoSerializer
-
-class PeriodoDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminStaff]
     queryset = Periodo_vacacional.objects.all()
     serializer_class = PeriodoSerializer
 
-class ReservacionCreate(generics.CreateAPIView):
+class PeriodoList(generics.ListAPIView):
+   serializer_class = PeriodoSerializer
+
+   def get_queryset(self):
+       return Periodo_vacacional.objects.filter(activo=True)
+
+
+
+
+class ReservacionCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated, ReservacionUser]
     serializer_class = ReservacionSerializer
+    throttle_classes = [ReservacionCreateThrottle]
 
     def get_queryset(self):
-        return Reservacion.objects.all()
+        username = self.request.query_params('username', None)
+        return Reservacion.objects.filter(id_usuario__usuario=username)
 
     def perform_create(self, serializer):
         #esto trae el id del periodo vacacional en la url
@@ -82,3 +89,5 @@ class ReservacionDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [ReservacionUser]
     queryset = Reservacion.objects.all()
     serializer_class = ReservacionSerializer
+
+
