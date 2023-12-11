@@ -1,20 +1,10 @@
 from rest_framework import serializers
-from alojamientoslist_app.models import (Periodo_vacacional, Persona, Alojamiento, Cargo, Reservacion)
+from alojamientoslist_app.models import (Periodo_vacacional, Alojamiento, Cargo, Reservacion)
 
-class PersonaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Persona
-        fields = '__all__'
-
-    def validated_nombre_completo(self, data):
-        if len(data)<3:
-            raise serializers.ValidationError("El nombre del huesped es muy corto")
-        else:
-            return data
 
 class ReservacionSerializer(serializers.ModelSerializer):
     id_usuario = serializers.StringRelatedField(read_only=True)
-    nombre_usuario = serializers.CharField(source='User.username')
+    #nombre_usuario = serializers.CharField(source='Perosona.username')
     class Meta:
         model = Reservacion
         exclude = ['id_periodo']

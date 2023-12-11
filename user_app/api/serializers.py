@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from user_app.models import Persona
 
 class RegistrationsSerrializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'password', 'password2']
+        model = Persona
+        fields = ['usuario', 'correo', 'password', 'password2', 'nombre_completo', 'ci', 'telefono']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -16,9 +17,15 @@ class RegistrationsSerrializer(serializers.ModelSerializer):
         password2 = self.validated_data['password2']
         if password != password2:
             raise serializers.ValidationError({'error': 'Las contraseñas no coinciden'})
-        if User.objects.filter(email=self.validated_data['email']).exists():
+        if Persona.objects.filter(correo=self.validated_data['correo']).exists():
             raise serializers.ValidationError({'error': 'El correo ya existe'})
-        account = User(email=self.validated_data['email'], username=self.validated_data['username'])
-        account.set_password(password)
+        account = Persona.objects.create_user(
+            nombre_completo=self.validated_data['nombre_completo'],
+            usuario=self.validated_data['usuario'],
+            password=self.validated_data['password'],
+            ci=self.validated_data['ci'],
+        )
+        account.telefono=self.validated_data['telefono']
+        account.set_password=self.validated_data['password']
         account.save()
         return account

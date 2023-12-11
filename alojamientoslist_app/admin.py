@@ -4,7 +4,6 @@ from alojamientoslist_app.models import (Provincia, Periodo_vacacional, Persona,
 
 admin.site.register(Provincia)
 admin.site.register(Periodo_vacacional)
-admin.site.register(Persona)
 admin.site.register(Municipio)
 admin.site.register(Alojamiento)
 admin.site.register(Cargo)
