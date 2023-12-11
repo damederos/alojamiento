@@ -24,8 +24,9 @@ class RegistrationsSerrializer(serializers.ModelSerializer):
             usuario=self.validated_data['usuario'],
             password=self.validated_data['password'],
             ci=self.validated_data['ci'],
+            correo=self.validated_data['correo']
         )
-        account.telefono=self.validated_data['telefono']
         account.set_password=self.validated_data['password']
+        account.telefono = self.validated_data['telefono']
         account.save()
         return account

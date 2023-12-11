@@ -138,11 +138,15 @@ REST_FRAMEWORK = {
         'anon': '100/day',
         'user': '50/day',
         'reservacion-create': '5/day'
-    }
+    },
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
 }
 
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'ACCESS_TOKEN_LIFETIME': timedelta(days=365),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
+    'USER_ID_FIELD': 'id_persona'
 }

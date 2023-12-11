@@ -17,7 +17,6 @@ class MyAccountManager(BaseUserManager):
             correo= self.normalize_email(correo),
             usuario=usuario,
             nombre_completo=nombre_completo,
-
             ci=ci,
         )
         user.set_password(password)
@@ -29,7 +28,6 @@ class MyAccountManager(BaseUserManager):
             correo=self.normalize_email(correo),
             usuario=usuario,
             nombre_completo=nombre_completo,
-
             ci=ci,
             password=password,
         )
@@ -47,7 +45,6 @@ class Persona(AbstractBaseUser):
     usuario = models.CharField(max_length=50, unique=True, null=False, blank=False)
     correo = models.EmailField(max_length=254, unique=True, null=False, blank=False)
     telefono = models.CharField(max_length=30)
-
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
