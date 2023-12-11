@@ -23,6 +23,6 @@ urlpatterns = [
 
     #Gestionar reservacion
     path('periodo/<int:pk>/reservation-create/', ReservacionCreate.as_view(), name='reservacion-create'),
-    path('reservacion/<int:pk>/', ReservacionDetail.as_view(), name='reservacion-detail'),
+    path('reservation/<int:pk>/', ReservacionDetail.as_view(), name='reservacion-detail'),
     path('reservacion/', ReservacionCreate.as_view(http_method_names=['get']), name='reservacion-list')
 ]

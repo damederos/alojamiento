@@ -37,7 +37,7 @@ from alojamientoslist_app.api.throttling import ReservacionCreateThrottle
 
 #crud de cargo
 class CargoVS(viewsets.ModelViewSet):
-    permission_classes = [IsAdminStaff]
+    #permission_classes = [IsAdminStaff]
     queryset = Cargo.objects.all()
     serializer_class = CargoSerializer
 
