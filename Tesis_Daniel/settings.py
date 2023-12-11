@@ -82,10 +82,14 @@ AUTH_USER_MODEL = 'user_app.Persona'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'UJC',
+       'USER': 'postgres',
+       'PASSWORD': 'Leonor29',
+       'HOST': 'localhost',
+       'PORT': '5432',
+   }
 }
 
 
