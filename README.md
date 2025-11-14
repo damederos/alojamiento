@@ -12,6 +12,5 @@ Este proyecto fue creado como una práctica inicial para aprender los fundamento
 
 ---
 
-## Documentación
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/damederos/alojamiento)
+[![Documentación](https://deepwiki.com/badge.svg)](https://deepwiki.com/damederos/alojamiento)
